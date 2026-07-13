@@ -2,11 +2,21 @@ from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from typing import List
+import logging
 import database, models, schemas, auth
 import datetime
 
-# Inicializa as tabelas do banco de dados SQLite
-models.Base.metadata.create_all(bind=database.engine)
+# Configuração de logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("main")
+
+# Inicializa as tabelas do banco de dados
+try:
+    logger.info("Criando tabelas no banco de dados se não existirem...")
+    models.Base.metadata.create_all(bind=database.engine)
+    logger.info("Conexão e inicialização das tabelas no banco de dados realizadas com sucesso.")
+except Exception as e:
+    logger.error(f"Erro ao conectar ou criar tabelas no banco de dados: {str(e)}")
 
 app = FastAPI(title="Pragma Focus API", version="1.0.0")
 
