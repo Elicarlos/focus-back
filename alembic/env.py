@@ -27,7 +27,19 @@ import models
 target_metadata = models.Base.metadata
 
 # Configura a url do banco a partir das variáveis de ambiente se disponível
-database_url = os.getenv("DATABASE_URL", config.get_main_option("sqlalchemy.url"))
+database_url = os.getenv("DATABASE_URL")
+if not database_url and os.path.exists(".env"):
+    with open(".env", "r") as f:
+        for line in f:
+            if line.strip().startswith("DATABASE_URL="):
+                database_url = line.strip().split("DATABASE_URL=", 1)[1]
+                if (database_url.startswith('"') and database_url.endswith('"')) or (database_url.startswith("'") and database_url.endswith("'")):
+                    database_url = database_url[1:-1]
+                break
+
+if not database_url:
+    database_url = config.get_main_option("sqlalchemy.url")
+
 if database_url:
     config.set_main_option("sqlalchemy.url", database_url)
 
