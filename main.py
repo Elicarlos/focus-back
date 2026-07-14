@@ -23,10 +23,13 @@ app = FastAPI(title="Pragma Focus API", version="1.0.0")
 # Habilita CORS para permitir conexões do front-end hospedado em outro domínio/VPS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "http://localhost:3000",
+        "http://a33qw28hn83ky06i7gua435q.187.127.15.180.sslip.io",
+    ],
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE"],
+    allow_headers=["Authorization", "Content-Type"],
 )
 
 @app.get("/")
