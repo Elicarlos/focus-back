@@ -18,6 +18,7 @@ class User(Base):
     level = Column(Integer, default=1)
     gems = Column(Integer, default=100)
     streak = Column(Integer, default=0)
+    total_sessions = Column(Integer, default=0)
     water_units = Column(Integer, default=0)
     skill_points = Column(Integer, default=0)
     tree_health = Column(Integer, default=100)
